@@ -1,0 +1,14 @@
+version: '2'
+services:
+  main:
+    build: .
+    image: rucciva/vpnws:latest
+    privileged: true
+    restart: unless-stopped 
+    #environment:
+    # - INTERFACE=
+    # - BRIDGE_INTERFACE=
+    volumes:
+    - ./volumes/etc/dhcp/dhcpd.conf:/etc/dhcp/dhcpd.conf
+    ports:
+    - "61080:8080"

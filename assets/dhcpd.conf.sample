@@ -1,0 +1,12 @@
+default-lease-time 600;
+max-lease-time 7200;
+option subnet-mask 255.255.0.0;
+option broadcast-address 172.17.255.255;
+option rfc3442-classless-static-routes code 121 = array of integer 8;
+option ms-classless-static-routes code 249 = array of integer 8;
+
+subnet 172.17.0.0 netmask 255.255.0.0{
+	range 172.17.0.100 172.17.0.200;
+	option rfc3442-classless-static-routes 27, 192,168,11,0, 172,17,0,1;
+	option ms-classless-static-routes 27, 192,168,11,0, 172,17,0,1;
+}

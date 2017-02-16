@@ -1,0 +1,8 @@
+server {
+    listen        8080;
+
+    location /vpn {
+        uwsgi_pass   unix:/run/vpn.sock;
+        include      uwsgi_params;
+    }
+}
