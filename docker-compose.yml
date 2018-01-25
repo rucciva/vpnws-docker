@@ -1,14 +1,29 @@
-version: '2'
+version: '3.4'
 services:
-  main:
-    build: .
-    image: rucciva/vpnws:latest
+  vpnws:
+    build: 
+      context: ./docker/vpnws
+    image: rucciva/vpnws:1.0.0
     privileged: true
     restart: unless-stopped 
-    #environment:
-    # - INTERFACE=
-    # - BRIDGE_INTERFACE=
     volumes:
-    - ./volumes/etc/dhcp/dhcpd.conf:/etc/dhcp/dhcpd.conf
+      - ./volumes/_/var/run/vpnws/:/var/run/vpnws/
+  nginx:
+    build: 
+      context: ./docker/nginx
+    image: rucciva/vpnws-nginx:1.0.0
+    restart: unless-stopped 
+    volumes:
+      - ./volumes/_/var/run/vpnws/:/var/run/vpnws/:ro
     ports:
-    - "61080:8080"
+      - "61080:8080"
+  dhcp-server:
+    build: 
+      context: ./docker/dhcp-server
+    image: rucciva/vpnws-dhcp-server:1.0.0
+    restart: unless-stopped 
+    environment:
+      - ISC_DHCP_LEASE_TIME=600
+      - ISC_MAX_LEASE_TIME=7200
+      - ISC_RANGE=100
+      - ISC_TARGET_NETWORK=192.168.11.0/27
